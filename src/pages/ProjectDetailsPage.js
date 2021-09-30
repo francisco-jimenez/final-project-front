@@ -25,6 +25,7 @@ function ProjectDetailsPage (props) {
       )
       .then((response) => {
         const oneProject = response.data;
+        console.log(oneProject)
         setProject(oneProject);
       })
       .catch((error) => console.log(error));
@@ -47,8 +48,15 @@ function ProjectDetailsPage (props) {
 
       
       <AddTask refreshProject={getProject} projectId={projectId} />          
+        
+      { project && project.tasks.map((task) => {
+        console.log(task)
+        return(
 
-      { project && project.tasks.map((task) => <TaskCard key={task._id} {...task} /> )} 
+          <TaskCard key={task._id} {...task} />  
+        )
+    
+      })}
 
       <Link to="/projects">
         <button>Back to projects</button>

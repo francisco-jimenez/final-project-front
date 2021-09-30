@@ -8,6 +8,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 function ProjectListPage() {
   const [projects, setProjects] = useState([]);
+  const[loading,setLoading] = useState(true)
 
   const getAllProjects = () => {
     // Get the token from the localStorage
@@ -19,7 +20,10 @@ function ProjectListPage() {
       `${API_URL}/projects`,
       { headers: { Authorization: `Bearer ${storedToken}` } }
     )
-      .then((response) => setProjects(response.data))
+      .then((response) => {
+        setProjects(response.data)
+        setLoading(false)
+      })
       .catch((error) => console.log(error));
   };
 
@@ -34,8 +38,9 @@ function ProjectListPage() {
     <div className="ProjectListPage">
       
       <AddProject refreshProjects={getAllProjects} />
-      
-      { projects?.map((project) => <ProjectCard key={project._id} {...project} />  )} 
+
+      {loading && <div>Loading...</div>}
+      { !loading && projects?.map((project) => <ProjectCard key={project._id} {...project} />  )} 
        
     </div>
   );
